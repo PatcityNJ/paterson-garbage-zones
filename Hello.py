@@ -8,6 +8,12 @@ import re
 
 LOGGER = get_logger(__name__)
 
+hide_github_icon = """
+#GithubIcon {
+  visibility: hidden;
+}
+"""
+st.markdown(hide_github_icon, unsafe_allow_html=True)
 
 def run():
 
