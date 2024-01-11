@@ -1,50 +1,59 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 import streamlit as st
+import pandas as pd
+import numpy as np
+import openpyxl
 from streamlit.logger import get_logger
+import re
 
 LOGGER = get_logger(__name__)
 
 
 def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
 
-    st.write("# Welcome to Streamlit! 👋")
+    st.title("Search Bulk Pickup Zones by Address")
 
-    st.sidebar.success("Select a demo above.")
+    st.markdown('''
+                :red[Important note:] Please do not include apartment, floor, 
+                or unit information in your search.''')
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+    query = st.text_input("Search Address", 
+                          placeholder="155 Market St") # clear spaces from query
+    query = query.replace(" ", "")
+
+    #if query and validate_text(query):
+    if validate_text(query) == 2:
+        st.error("Invalid address.")
+    elif validate_text(query):
+        try:  
+            df = pd.read_excel("/workspaces/paterson-garbage-zones/Trash-Zones.xlsx")
+            res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
+                                                regex=False)]
+        except Exception as e: # raise if any query that includes symbols or invalid input
+            st.error("Invalid address.")
+        else:
+            if not res.empty:  
+                st.success('Address found.')
+                res = res[["Address", "Zone"]]
+                res = res.set_index("Address")
+                res = res.head(3)
+                st.dataframe(res, width=None)
+            else:
+                st.error("Address not found.") 
+
+
+def validate_text(q): # checks for empty string, 
+    #valid_pattern = r"^[a-zA-Z0-9,]+$"
+    #valid_pattern = r"[\w,]+"
+    comma_pattern = r"^[,]*$"
+    #if re.search(valid_pattern, q) and not re.fullmatch(r"^[,]*$", q):
+    if not q:
+        return False
+    elif re.fullmatch(comma_pattern, q):
+        return 2
+    else:
+        return True
+
 
 
 if __name__ == "__main__":
