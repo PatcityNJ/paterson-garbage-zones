@@ -53,9 +53,20 @@ def run():
                           placeholder="155 Market St") # clear spaces from query
     query = query.replace(" ", "")
 
-    #if query and validate_text(query):
+    if query:
+        with st.spinner('Please wait...'):
+            res = search(query)
+            if isinstance(res, pd.DataFrame):
+                st.success('Address found.')
+                st.dataframe(res, width=None)
+            else:
+                st.error("No address found.")
+
+
+def search(query):
     if validate_text(query) == 2:
-        st.error("Invalid address.")
+        return None
+        #st.error("Invalid address.")
     elif validate_text(query):
         try:  
             df = pd.read_excel("Trash-Zones.xlsx")
@@ -63,29 +74,31 @@ def run():
                 res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
                                                 regex=False)]
         except Exception as e: # raise if any query that includes symbols or invalid input
-            st.error("Invalid address.")
+            return None
+            #st.error("Invalid address.")
         else:
             if not res.empty:  
-                st.success('Address found.')
-                res = res[["Address", "Zone"]]
-                res = res.set_index("Address")
-                res = res.head(3)
-                st.dataframe(res, width=None)
+                with st.spinner('Wait for it...'):
+                    #st.success('Address found.')
+                    res = res[["Address", "Zone"]]
+                    res = res.set_index("Address")
+                    res = res.head(1)
+                    return res  
             else:
-                st.error("Address not found.") 
-
+                return None
+                #st.error("Address not found.") 
 
 def validate_text(q): # checks for empty string, 
     #valid_pattern = r"^[a-zA-Z0-9,]+$"
     #valid_pattern = r"[\w,]+"
     comma_pattern = r"^[,]*$"
+    #just_st_name = r"^[st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd]$"
+    just_st_name = r"^(st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd|st\.|ave\.|ter\.|ln\.|pl\.|brg\.|rd\.|blvd\.|dr\.|pl\.)$"
+    #st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd|st\.|ave\.|ter\.|ln\.|pl\.|brg\.|rd\.|blvd\.|dr\.|pl\.
     #if re.search(valid_pattern, q) and not re.fullmatch(r"^[,]*$", q):
-    if not q:
+    if not q or re.fullmatch(comma_pattern, q) or re.fullmatch(just_st_name, q):
         return False
-    elif re.fullmatch(comma_pattern, q):
-        return 2
-    else:
-        return True
+    return True
 
 
 
