@@ -9,6 +9,7 @@ import re
 LOGGER = get_logger(__name__)
 
 
+
 st.markdown(
     """
     <style>
@@ -16,12 +17,26 @@ st.markdown(
     .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
     .viewerBadge_text__1JaDK {
         display: none;
+        visibility: hidden;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
+
+st.markdown(
+    """
+    <style>
+    .st-emotion-cache-zq5wmm, .st-emotion-cache-zq5wmm.ezrtsby0,
+    #MainMenu
+    {
+        display: none;
+        visibility: hidden;
+    }
+    </style>
+    """
+)
 
 
 
@@ -42,7 +57,7 @@ def run():
         st.error("Invalid address.")
     elif validate_text(query):
         try:  
-            df = pd.read_excel("/workspaces/paterson-garbage-zones/Trash-Zones.xlsx")
+            df = pd.read_excel("Trash-Zones.xlsx")
             res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
                                                 regex=False)]
         except Exception as e: # raise if any query that includes symbols or invalid input
