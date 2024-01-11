@@ -59,7 +59,8 @@ def run():
     elif validate_text(query):
         try:  
             df = pd.read_excel("Trash-Zones.xlsx")
-            res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
+            with st.spinner('Please wait...'):
+                res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
                                                 regex=False)]
         except Exception as e: # raise if any query that includes symbols or invalid input
             st.error("Invalid address.")
