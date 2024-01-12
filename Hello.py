@@ -42,6 +42,10 @@ st.markdown(
         display: none;
         visibility: hidden;
     }
+    footer{
+        display:none;
+        visibility:hidden;
+    }
     </style>
     """,
     unsafe_allow_html=True
