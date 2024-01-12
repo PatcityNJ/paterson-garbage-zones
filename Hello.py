@@ -29,7 +29,7 @@ st.markdown(
     """
     <style>
     .st-emotion-cache-zq5wmm, .st-emotion-cache-zq5wmm.ezrtsby0,
-    #MainMenu
+    #MainMenu, footer
     {
         display: none;
         visibility: hidden;
@@ -46,7 +46,7 @@ def run():
     st.title("Search Bulk Pickup Zones by Address")
 
     st.markdown('''
-                :red[Important note:] Please do not include apartment, floor, 
+                :red[Important Note:] Please do not include apartment, floor, 
                 or unit information in your search.''')
 
     query = st.text_input("Search Address", 
@@ -64,10 +64,10 @@ def run():
 
 
 def search(query):
-    if validate_text(query) == 2:
-        return None
+    #if validate_text(query) == 2:
+        #return None
         #st.error("Invalid address.")
-    elif validate_text(query):
+    if validate_text(query):
         try:  
             df = pd.read_excel("Trash-Zones.xlsx")
             with st.spinner('Please wait...'):
@@ -96,7 +96,8 @@ def validate_text(q): # checks for empty string,
     just_st_name = r"^(st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd|st\.|ave\.|ter\.|ln\.|pl\.|brg\.|rd\.|blvd\.|dr\.|pl\.)$"
     #st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd|st\.|ave\.|ter\.|ln\.|pl\.|brg\.|rd\.|blvd\.|dr\.|pl\.
     #if re.search(valid_pattern, q) and not re.fullmatch(r"^[,]*$", q):
-    if not q or re.fullmatch(comma_pattern, q) or re.fullmatch(just_st_name, q):
+    if re.fullmatch(comma_pattern, q) or re.fullmatch(just_st_name, q):
+    # if not q or re.fullmatch(comma_pattern, q) or re.fullmatch(just_st_name, q):
         return False
     return True
 
