@@ -59,8 +59,21 @@ def run():
     st.title("Search Bulk Pickup Zones by Address")
 
     st.markdown('''
-                :red[Important Note:] Please do not include apartment, floor, 
-                or unit information in your search.''')
+                <p style="color:red">Important Note:</p>
+                <ul>
+                <li> 
+                Please <u>do not</u> include apartment, floor, 
+                or unit information in your search. 
+                </li>
+                <li>
+                Use abbreviations, prefixes, suffixes when applicable. For example, if 
+                your address is located on East 18 Street, please search <i><b>"XXX E 18th St, Paterson, NJ"</b></i> 
+                </li>
+                <li>
+                Example Searches: "155 Market St, Paterson, NJ" or "155 Market St"
+                </li>
+                </ul>
+                ''', unsafe_allow_html=True)
 
     query = st.text_input("Search Address", 
                           placeholder="155 Market St") # clear spaces from query
