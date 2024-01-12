@@ -24,12 +24,20 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 
 st.markdown(
     """
     <style>
     .st-emotion-cache-zq5wmm, .st-emotion-cache-zq5wmm.ezrtsby0,
-    #MainMenu, footer
+    #MainMenu
     {
         display: none;
         visibility: hidden;
