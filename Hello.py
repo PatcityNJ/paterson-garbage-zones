@@ -61,6 +61,9 @@ def run():
     st.markdown('''
                 <p style="color:red">Important Note:</p>
                 <ul>
+                <li>
+                <b>Supported Browsers:</b> Google Chrome, Microsoft Edge, or Safari.
+                </li>
                 <li> 
                 Please <u>do not</u> include apartment, floor, 
                 or unit information in your search. 
