@@ -66,11 +66,11 @@ def run():
                 or unit information in your search. 
                 </li>
                 <li>
-                Use abbreviations, prefixes, suffixes when applicable. For example, if 
-                your address is located on East 18 Street, please search <i><b>"XXX E 18th St, Paterson, NJ"</b></i> 
+                Please use prefixes, suffixes, and/or abbreviations when applicable. For example, if 
+                your address is located on 1234 East 18 Avenue, please search <i><b>"1234 E 18th Ave, Paterson, NJ".</b></i> 
                 </li>
                 <li>
-                Example Searches: "155 Market St, Paterson, NJ" or "155 Market St"
+                Example Searches: "155 Market St, Paterson, NJ" or "155 Market St".
                 </li>
                 </ul>
                 ''', unsafe_allow_html=True)
@@ -108,7 +108,7 @@ def search(query):
                     #st.success('Address found.')
                     res = res[["Address", "Zone"]]
                     res = res.set_index("Address")
-                    res = res.head(1)
+                    res = res.head(3)
                     return res  
             else:
                 return None
