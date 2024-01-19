@@ -81,6 +81,10 @@ def run():
     query = st.text_input("Search Address", 
                           placeholder="155 Market St") # clear spaces from query
     query = query.replace(" ", "")
+    query = query.replace(".", "")
+    query = remove_zip(query)
+
+    st.write(f"Debug:{query}")
 
     if query:
         with st.spinner('Please wait...'):
@@ -91,6 +95,12 @@ def run():
             else:
                 st.error("No address found.")
 
+def remove_zip(query):
+    patterns = [r"paterson(.*)$", r",(.*)$"]
+    for pat in patterns:
+        query = re.sub(pat, "", query)
+    return query
+
 
 def search(query):
     #if validate_text(query) == 2:
@@ -100,13 +110,28 @@ def search(query):
         try:  
             df = pd.read_excel("Trash-Zones.xlsx")
             with st.spinner('Please wait...'):
-                res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
-                                                regex=False)]
+                #res = df[df["Address_Strip"].str.contains(query, case=False,  #match case-insensitive address
+                #                                regex=False)]
+                #res = df[["Full_Text_Address_Strip", "Address_Strip"]].str.contains(query, 
+                 #                                                                  case=False,
+                 #                                                                  regex=False)
+                #res = df[["Full_Text_Address_Strip", "Address_Strip"]].apply(lambda col: col.str.contains(query, 
+                #                                                                   case=False,
+                #                                                                   regex=False), axis=0)
+                #res = df[res]
+                x = df["Full_Text_Address_Strip"].str.contains(query, case=False,regex=False)
+                y = df["Address_Strip"].str.contains(query, case=False,regex=False)
+                r1 = df["Raw_Address"].str.contains(query, case=False,regex=False)
+                r2 = df["Raw_Address2"].str.contains(query, case=False,regex=False)
+                logic = x | y | r1 | r2
+                res = df[logic]
+                #st.write(f"Debug {res}")
+
         except Exception as e: # raise if any query that includes symbols or invalid input
             return None
             #st.error("Invalid address.")
-        else:
-            if not res.empty:  
+        else: # no errors
+            if not res.empty:  # matched address
                 with st.spinner('Wait for it...'):
                     #st.success('Address found.')
                     res = res[["Address", "Zone"]]
