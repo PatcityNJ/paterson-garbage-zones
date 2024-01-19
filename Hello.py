@@ -141,8 +141,6 @@ def search(query):
                 #st.error("Address not found.") 
 
 def validate_text(q): # checks for empty string, 
-    #valid_pattern = r"^[a-zA-Z0-9,]+$"
-    #valid_pattern = r"[\w,]+"
     comma_pattern = r"^[,]*$"
     #just_st_name = r"^[st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd]$"
     just_st_name = r"^(st|ave|ter|ln|pl|brg|run|dr|ct|pkwy|mall|plz|way|rd|trl|blvd|st\.|ave\.|ter\.|ln\.|pl\.|brg\.|rd\.|blvd\.|dr\.|pl\.)$"
