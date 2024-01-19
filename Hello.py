@@ -84,8 +84,6 @@ def run():
     query = query.replace(".", "")
     query = remove_zip(query)
 
-    st.write(f"Debug:{query}")
-
     if query:
         with st.spinner('Please wait...'):
             res = search(query)
