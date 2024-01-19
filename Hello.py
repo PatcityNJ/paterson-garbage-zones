@@ -80,9 +80,10 @@ def run():
 
     query = st.text_input("Search Address", 
                           placeholder="155 Market St") # clear spaces from query
-    query = query.replace(" ", "")
-    query = query.replace(".", "")
-    query = remove_zip(query)
+    #query = query.replace("  ", "")
+    query = remove_zip(query).strip()
+    query = re.sub(r"\s+", " ", query)
+    st.write(query)
 
     if query:
         with st.spinner('Please wait...'):
@@ -117,11 +118,18 @@ def search(query):
                 #                                                                   case=False,
                 #                                                                   regex=False), axis=0)
                 #res = df[res]
-                x = df["Full_Text_Address_Strip"].str.contains(query, case=False,regex=False)
-                y = df["Address_Strip"].str.contains(query, case=False,regex=False)
-                r1 = df["Raw_Address"].str.contains(query, case=False,regex=False)
-                r2 = df["Raw_Address2"].str.contains(query, case=False,regex=False)
-                logic = x | y | r1 | r2
+                
+                # x = df["Full_Text_Address_Strip"].str.contains(query, case=False,regex=False)
+                # y = df["Address_Strip"].str.contains(query, case=False,regex=False)
+                # r1 = df["Raw_Address"].str.contains(query, case=False,regex=False)
+                # r2 = df["Raw_Address2"].str.contains(query, case=False,regex=False)
+                x1 = df["Street"].str.contains(query, case=False,regex=False)
+                x2 = df["Street2"].str.contains(query, case=False,regex=False)
+                x3 = df["Street3"].str.contains(query, case=False,regex=False)
+                x4 = df["Street4"].str.contains(query, case=False,regex=False)
+                x5 = df["Street5"].str.contains(query, case=False,regex=False)
+                x6 = df["Street6"].str.contains(query, case=False,regex=False)
+                logic = x1 | x2 | x3 | x4 | x5 | x6
                 res = df[logic]
                 #st.write(f"Debug {res}")
 
