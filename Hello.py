@@ -69,10 +69,6 @@ def run():
                 or unit information in your search. 
                 </li>
                 <li>
-                Please use prefixes, suffixes, and/or abbreviations when applicable. For example, if 
-                your address is located on 1234 East 18 Avenue, please search <i><b>"1234 E 18th Ave, Paterson, NJ".</b></i> 
-                </li>
-                <li>
                 Example Searches: "155 Market St, Paterson, NJ" or "155 Market St".
                 </li>
                 </ul>
@@ -83,7 +79,6 @@ def run():
     #query = query.replace("  ", "")
     query = remove_zip(query).strip()
     query = re.sub(r"\s+", " ", query)
-    st.write(query)
 
     if query:
         with st.spinner('Please wait...'):
