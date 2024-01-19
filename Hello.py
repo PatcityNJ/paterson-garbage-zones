@@ -69,7 +69,7 @@ def run():
                 or unit information in your search. 
                 </li>
                 <li>
-                Example Searches: "155 Market St, Paterson, NJ" or "155 Market St".
+                Example Searches: "155 Market St, Paterson, NJ" or "155 Market Street".
                 </li>
                 </ul>
                 ''', unsafe_allow_html=True)
@@ -77,6 +77,7 @@ def run():
     query = st.text_input("Search Address", 
                           placeholder="155 Market St") # clear spaces from query
     #query = query.replace("  ", "")
+    query = query.replace(".", "")
     query = remove_zip(query).strip()
     query = re.sub(r"\s+", " ", query)
 
